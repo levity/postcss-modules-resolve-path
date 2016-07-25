@@ -26,6 +26,46 @@ into:
 }
 ```
 
+It will ignore absolute and relative paths, so:
+
+```css
+.myClass {
+  composes: button from "button.css";
+  color: green;
+}
+
+.myClass2 {
+  composes: button from "/button.css";
+  color: green;
+}
+
+
+.myClass3 {
+  composes: button from "./button.css";
+  color: green;
+}
+```
+
+will still be:
+
+```css
+.myClass {
+  composes: button from "components/style/button.css";
+  color: green;
+}
+
+.myClass2 {
+  composes: button from "/button.css";
+  color: green;
+}
+
+
+.myClass3 {
+  composes: button from "./button.css";
+  color: green;
+}
+```
+
 ## Options
 
 - _paths_ - array of search paths
