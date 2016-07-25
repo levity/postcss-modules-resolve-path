@@ -1,5 +1,9 @@
 # CSS Modules: Search paths to resolve compose directives
 
+[![Build Status](https://travis-ci.org/raisebook/postcss-modules-resolve-path.svg?branch=master)](https://travis-ci.org/raisebook/postcss-modules-resolve-path)
+[![NPM version](http://img.shields.io/npm/v/postcss-modules-resolve-path.svg)](https://www.npmjs.org/package/postcss-modules-resolve-paths)
+
+
 With this config:
 
 ```javascript
