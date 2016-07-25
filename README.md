@@ -1,22 +1,18 @@
-# CSS Modules: Resolve imports from aliases
-
-[![Build Status](https://travis-ci.org/pekim/postcss-modules-resolve-from-alias.svg?branch=master)](https://travis-ci.org/pekim/postcss-modules-resolve-from-alias)
-[![NPM version](http://img.shields.io/npm/v/postcss-modules-resolve-from-alias.svg)](https://www.npmjs.org/package/postcss-modules-resolve-from-alias)
-
+# CSS Modules: Search paths to resolve compose directives
 
 With this config:
 
 ```javascript
 {
-  'css': 'src/style'
+  'paths': [ 'src/style', 'components/style' ]
 }
 ```
 
-transforms:
+given two files: 'src/style/base.css' and 'components/style/button.css:
 
 ```css
 .myClass {
-  composes: button from "css/button.css";
+  composes: button from "button.css";
   color: green;
 }
 ```
@@ -25,19 +21,14 @@ into:
 
 ```css
 .myClass {
-  composes: button from "src/style/button.css";
+  composes: button from "components/style/button.css";
   color: green;
 }
 ```
 
 ## Options
 
-An object, where each key/value pair represents an alias for `composes` import paths.
-- _key_ - `composes` import path prefix
-- _value_ - replacement value for the import path prefix
-
-Both keys and values may include a trailing `/`.
-If there is no trailing `/`, then one is implied.
+- _paths_ - array of search paths
 
 ## Building
 
@@ -46,11 +37,6 @@ npm install
 npm build
 npm test
 ```
-
-[![Build Status](https://travis-ci.org/pekim/postcss-modules-resolve-from-alias.svg?branch=master)](https://travis-ci.org/pekim/postcss-modules-resolve-from-alias)
-
-* Lines: [![Coverage Status](https://coveralls.io/repos/pekim/postcss-modules-resolve-from-alias/badge.svg?branch=master&service=github)](https://coveralls.io/github/pekim/postcss-modules-resolve-from-alias?branch=master)
-* Statements: [![codecov.io](http://codecov.io/github/pekim/postcss-modules-resolve-from-alias/coverage.svg?branch=master)](http://codecov.io/github/pekim/postcss-modules-resolve-from-alias?branch=master)
 
 ## Development
 
