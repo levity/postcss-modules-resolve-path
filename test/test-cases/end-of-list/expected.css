@@ -1,0 +1,3 @@
+.className {
+  composes: importName from "test/test-paths/3/test-3.css";
+}

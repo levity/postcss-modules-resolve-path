@@ -1,4 +1,0 @@
-.className {
-  composes: importName from "css-one-level/library.css";
-  other: rule;
-}

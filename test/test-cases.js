@@ -6,9 +6,7 @@ import postcss from 'postcss';
 import processor from '../src';
 
 const options = {
-  'css-one-level'                 : 'dest-one-level',
-  'css/two-levels'                : 'dest-two-levels',
-  'css/two-levels-trailing-slash/': 'dest-two-levels-trailing-slash'
+  paths: [ './test/test-paths/1', './test/test-paths/2', './test/test-paths/3' ]
 };
 
 const pipeline = postcss([processor(options)]);

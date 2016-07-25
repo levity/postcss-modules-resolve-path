@@ -1,54 +1,50 @@
 import postcss from 'postcss';
+import path from 'path';
+import fs from 'fs';
 
 const declFilter = /^composes$/;
 const matchImports = /^(.+?\s+from\s+)(?:'([^']+)'|"([^"]+)"|(global))$/;
 
-function ensureTrailingSeparator(pathname) {
-  return pathname.endsWith('/')
-    ? pathname
-    : pathname + '/'
-  ;
+function processOptions(options) {
+  const paths = options.paths;
+  return paths;
+}
+  
+function replacePaths(searchPath, searchPaths) {
+  if(searchPath.indexOf('.') == 0 || searchPath.indexOf('/') == 0) {
+    return searchPath;
 }
 
-function processOptions(options) {
-  const aliases = {};
+  for(let i  = 0; i < searchPaths.length; i++) {
+    let test = searchPaths[i];
+    let fullPath = path.join(test, searchPath);
 
-  for (const key of Object.keys(options)) {
-    const value = options[key];
-
-    aliases[ensureTrailingSeparator(key)] = ensureTrailingSeparator(value);
+    if(fs.existsSync(fullPath)) {
+      return fullPath;
+    }
   }
 
-  return aliases;
+  return searchPath;
 }
 
-function replaceAlias(path, aliases) {
-  const alias = Object.keys(aliases).find(alias => path.startsWith(alias));
-
-  return alias
-    ? path.replace(new RegExp('^' + alias), aliases[alias])
-    : path
-  ;
-}
-
-function processDecl(decl, aliases) {
+function processDecl(decl, searchPaths) {
   const matches = decl.value.match( matchImports );
 
   if (matches) {
     const [/*match*/, beforePath, singleQuotePath, doubleQuotePath] = matches;
     const pathQuote = doubleQuotePath ? '"' : '\'';
-    const path = singleQuotePath || doubleQuotePath;
-    const newPath = replaceAlias(path, aliases);
+    const searchPath = singleQuotePath || doubleQuotePath;
+    const newPath = replacePaths(searchPath, searchPaths);
 
     decl.value = `${beforePath}${pathQuote}${newPath}${pathQuote}`;
   }
 }
 
 export default postcss.plugin( 'modules-extract-imports', (options = {}) => {
-  const aliases = processOptions(options);
+  const searchPaths = processOptions(options);
 
   return css => {
     // find any declaration that looks like a 'composes'
-    css.walkDecls(declFilter, decl => processDecl(decl, aliases));
+    css.walkDecls(declFilter, decl => processDecl(decl, searchPaths));
   };
 });
